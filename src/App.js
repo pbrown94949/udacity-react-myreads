@@ -34,6 +34,9 @@ class BooksApp extends React.Component {
     BooksAPI.getAll()
     .then((books) => {
       const shelfContents = {}
+      /* shelfContents has the same structure as the object returned
+       * by BooksAPI.update()
+       */
       books.forEach((book) => {
         shelfContents[book.shelf] = []
       })
@@ -78,13 +81,11 @@ class BooksApp extends React.Component {
                 ))}
               </div>
             </div>
-            <div className='open-search'>
             <Link
               to='/search'
               className='open-search'>
               Open Search
             </Link>
-            </div>
           </div>
         )} />
       </div>
