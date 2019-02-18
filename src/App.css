@@ -155,6 +155,15 @@ button:active {
   color: #999;
 }
 
+.book-authors ul {
+  list-style-type: none;
+  padding-inline-start: 0px;
+}
+
+.book-authors li {
+  padding: 1px 1px;
+}
+
 .book-top {
   position: relative;
   height: 200px;
