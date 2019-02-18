@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import BookShelfChanger from './BookShelfChanger'
 
 class Book extends Component {
   getBackgroundImage = (imageLinks) => {
@@ -9,21 +10,25 @@ class Book extends Component {
       return 'none'
     }
   }
+
   handleChange = (event) => {
     const newShelf = event.target.value
-    this.props.reshelveBook(this.props.book, newShelf)
+    const {reshelveBook, book} = this.props
+    reshelveBook(book, newShelf)
   }
+
   getCurrentShelf = () => {
-    const shelves = this.props.shelves
-    const bookId = this.props.book.id
-    for (let shelfId of Object.getOwnPropertyNames(shelves)) {
-      if (shelves[shelfId].includes(bookId)) {
+    const {shelfContents, book} = this.props
+    for (let shelfId of Object.getOwnPropertyNames(shelfContents)) {
+      if (shelfContents[shelfId].includes(book.id)) {
         return shelfId;
       }
     }
     return 'none'
   }
+
   render() {
+    const {shelves, shelfContents, reshelveBook, book} = this.props
     const {title, authors, imageLinks} = this.props.book
     return (
       <li>
@@ -34,15 +39,12 @@ class Book extends Component {
               height: 193,
               backgroundImage: this.getBackgroundImage(imageLinks)
             }}></div>
-            <div className="book-shelf-changer">
-              <select onChange={this.handleChange} value={this.getCurrentShelf()}>
-                <option value="move" disabled>Move to...</option>
-                <option value="currentlyReading">Currently Reading</option>
-                <option value="wantToRead">Want to Read</option>
-                <option value="read">Read</option>
-                <option value="none">None</option>
-              </select>
-            </div>
+            <BookShelfChanger
+              book={book}
+              shelves={shelves}
+              shelfContents={shelfContents}
+              reshelveBook={reshelveBook}
+            />
           </div>
           <div className="book-title">{title}</div>
           {authors != null && (
@@ -64,7 +66,8 @@ class Book extends Component {
 
 Book.propTypes = {
   book: PropTypes.object.isRequired,
-  shelves: PropTypes.object.isRequired,
+  shelves: PropTypes.array.isRequired,
+  shelfContents: PropTypes.object.isRequired,
   reshelveBook: PropTypes.func.isRequired,
 }
 

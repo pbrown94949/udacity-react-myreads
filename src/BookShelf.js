@@ -4,22 +4,22 @@ import Book from './Book.js'
 
 class BookShelf extends Component {
   render() {
-    const {code, title} = this.props.details
-    const shelves = this.props.shelves
-    const booksOnThisShelf = this.props.books.filter((book) => {
-      return shelves[code] && shelves[code].includes(book.id)
+    const {id, label, books, shelves, shelfContents, reshelveBook} = this.props
+    const booksOnThisShelf = books.filter((book) => {
+      return shelfContents[id] && shelfContents[id].includes(book.id)
     })
     return(
       <div className="bookshelf">
-        <h2 className="bookshelf-title">{title}</h2>
+        <h2 className="bookshelf-title">{label}</h2>
         <div className="bookshelf-books">
           <ol className="books-grid">
-            {booksOnThisShelf.map((book) => (
+            {booksOnThisShelf.map((book, index) => (
               <Book
-                key={book.id}
+                key={index}
                 book={book}
                 shelves={shelves}
-                reshelveBook={this.props.reshelveBook}
+                shelfContents={shelfContents}
+                reshelveBook={reshelveBook}
               />
             ))}
           </ol>
@@ -30,9 +30,11 @@ class BookShelf extends Component {
 }
 
 BookShelf.propTypes = {
-  details: PropTypes.object.isRequired,
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
   books: PropTypes.array.isRequired,
-  shelves: PropTypes.object.isRequired,
+  shelves: PropTypes.array.isRequired,
+  shelfContents: PropTypes.object.isRequired,
   reshelveBook: PropTypes.func.isRequired,
 }
 

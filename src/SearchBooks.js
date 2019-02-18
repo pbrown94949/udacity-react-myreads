@@ -8,6 +8,7 @@ class SearchBooks extends Component {
   state = {
     results: [],
   }
+
   updateQuery = (event) => {
     const query = event.target.value
     if (query === '') {
@@ -23,7 +24,9 @@ class SearchBooks extends Component {
       })
     }
   }
+
   render() {
+    const {shelves, shelfContents, reshelveBook} = this.props
     return(
       <div className="search-books">
         <div className="search-books-bar">
@@ -43,12 +46,13 @@ class SearchBooks extends Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {this.state.results.map((book) => (
+            {this.state.results.map((book, index) => (
               <Book
-                key={book.id}
+                key={index}
                 book={book}
-                shelves={this.props.shelves}
-                reshelveBook={this.props.reshelveBook}
+                shelves={shelves}
+                shelfContents={shelfContents}
+                reshelveBook={reshelveBook}
               />
             ))}
           </ol>
@@ -59,7 +63,8 @@ class SearchBooks extends Component {
 }
 
 SearchBooks.propTypes = {
-  shelves: PropTypes.object.isRequired,
+  shelves: PropTypes.array.isRequired,
+  shelfContents: PropTypes.object.isRequired,
   reshelveBook: PropTypes.func.isRequired,
 }
 
