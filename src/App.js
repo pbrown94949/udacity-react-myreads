@@ -18,16 +18,24 @@ class BooksApp extends React.Component {
   }
 
   reshelveBook = (book, newShelf) => {
+    // Refresh this.state.shelfContents with the API response
     BooksAPI.update(book, newShelf)
     .then((shelfContents) => {
-        BooksAPI.getAll()
-        .then((books) => {
-          this.setState(() => ({
-            books,
-            shelfContents
-          }))
-        })
+      this.setState(() => ({
+        shelfContents
+      }))
     })
+    // True up this.state.books
+    const bookIsInState = this.state.books.filter(b => b.id === book.id).length > 0
+    if (bookIsInState && newShelf === 'none') {
+      this.setState((currentState) => ({
+        books: currentState.books.filter(b => b.id !== book.id)
+      }))
+    } else if (!bookIsInState && newShelf !== 'none') {
+      this.setState((currentState) => ({
+        books: [...currentState.books, book]
+      }))
+    }
   }
 
   componentDidMount() {
