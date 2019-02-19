@@ -11,22 +11,6 @@ class Book extends Component {
     }
   }
 
-  handleChange = (event) => {
-    const newShelf = event.target.value
-    const {reshelveBook, book} = this.props
-    reshelveBook(book, newShelf)
-  }
-
-  getCurrentShelf = () => {
-    const {shelfContents, book} = this.props
-    for (let shelfId of Object.getOwnPropertyNames(shelfContents)) {
-      if (shelfContents[shelfId].includes(book.id)) {
-        return shelfId;
-      }
-    }
-    return 'none'
-  }
-
   render() {
     const {shelves, shelfContents, reshelveBook, book} = this.props
     const {title, authors, imageLinks} = this.props.book
