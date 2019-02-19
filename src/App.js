@@ -1,9 +1,10 @@
 import React from 'react'
-import { Route, Link } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import './App.css'
 import * as BooksAPI from './BooksAPI'
-import BookShelf from './BookShelf'
+import BookShelves from './BookShelves'
 import SearchBooks from './SearchBooks'
+import FourOhFour from './FourOhFour'
 
 const shelves = [
   {id: 'currentlyReading', label: "Currently Reading"},
@@ -62,40 +63,24 @@ class BooksApp extends React.Component {
     const {books, shelfContents} = this.state
     return (
       <div className="app">
-        <Route path='/search' render = {() => (
-          <SearchBooks
-            shelves={shelves}
-            shelfContents={shelfContents}
-            reshelveBook={this.reshelveBook}
-          />
-        )} />
-        <Route exact path='/' render = {() => (
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
-            <div className="list-books-content">
-              <div>
-                {shelves.map((shelf, index) => (
-                  <BookShelf
-                    key={index}
-                    id={shelf.id}
-                    label={shelf.label}
-                    shelves={shelves}
-                    books={books}
-                    shelfContents={shelfContents}
-                    reshelveBook={this.reshelveBook}
-                  />
-                ))}
-              </div>
-            </div>
-            <Link
-              to='/search'
-              className='open-search'>
-              Open Search
-            </Link>
-          </div>
-        )} />
+        <Switch>
+          <Route path='/search' render = {() => (
+            <SearchBooks
+              shelves={shelves}
+              shelfContents={shelfContents}
+              reshelveBook={this.reshelveBook}
+            />
+          )} />
+          <Route exact path='/' render = {() => (
+            <BookShelves
+              books={books}
+              shelves={shelves}
+              shelfContents={shelfContents}
+              reshelveBook={this.reshelveBook}
+            />
+          )} />
+          <Route component={FourOhFour} />
+        </Switch>
       </div>
     )
   }
