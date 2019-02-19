@@ -20,13 +20,13 @@ class BookShelfChanger extends Component {
   }
 
   getSelectOptions = () => {
-    const x = []
-    x.push({value: "move", text: "Move to..."})
+    const result = []
+    result.push({value: "move", text: "Move to..."})
     for (let shelf of this.props.shelves) {
-      x.push({value: shelf.id, text: shelf.label})
+      result.push({value: shelf.id, text: shelf.label})
     }
-    x.push({value: "none", text: "None"})
-    return x
+    result.push({value: "none", text: "None"})
+    return result
   }
 
   render() {
